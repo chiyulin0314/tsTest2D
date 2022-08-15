@@ -40,13 +40,15 @@ export class spriteMove extends Component {
         console.log(`spriteMove => onDisable`);
         setTimeout(()=>{
             console.log("onDisable => setTimeout");
-            var pos = this.node.position;
-            var newX = - globalData.MAX_WIDTH/2;
-            if(this.trans != null){
-                newX += this.trans.width / 2;
+            if(this.node != null){
+                var pos = this.node.position;
+                var newX = - globalData.MAX_WIDTH/2;
+                if(this.trans != null){
+                    newX += this.trans.width / 2;
+                }
+                this.node.setPosition(newX,pos.y,pos.z);
+                this.node.active = true;
             }
-            this.node.setPosition(newX,pos.y,pos.z);
-            this.node.active = true;
         }, 3000);
     }
 }
