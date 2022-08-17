@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, game, KeyCode, Sprite, SpriteFrame, resources, UITransform, Layers } from 'cc';
-import { eventData } from '../eventData';
+import { eventData } from '../data/eventData';
 import { tetris } from '../tetris';
 const { ccclass, property } = _decorator;
 

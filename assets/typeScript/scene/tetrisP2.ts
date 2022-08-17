@@ -1,6 +1,6 @@
 import { _decorator, Component, Node, UITransform, KeyCode, game, Sprite, SpriteFrame, resources, Layers } from 'cc';
-import { eventData } from '../eventData';
-import { globalData } from '../globalData';
+import { eventData } from '../data/eventData';
+import { globalData } from '../data/globalData';
 import { tetris } from '../tetris';
 const { ccclass, property } = _decorator;
 

@@ -1,9 +1,10 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, CCInteger, CCFloat } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('autoDestroy')
 export class autoDestroy extends Component {
 
+    @property({type: CCFloat, min: 0.5, step: 0.5})
     second: number = 3;
 
     onDestroy(){

@@ -1,10 +1,10 @@
 import { _decorator, Component, Node, UITransform, Graphics, Color, Input, input, KeyCode, v2, Vec2, math, game } from 'cc';
-import { blockData, BLOCK_DIR } from './blockData';
+import { blockData, BLOCK_DIR } from './data/blockData';
 import { cell } from './cell';
-import { drawTools } from './drawTools';
-import { eventData } from './eventData';
-import { globalData } from './globalData';
+import { eventData } from './data/eventData';
+import { globalData } from './data/globalData';
 import { key } from './key';
+import { drawTools } from './tools/drawTools';
 const { ccclass, property } = _decorator;
 
 @ccclass('tetris')

@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, UITransform, CCObject } from 'cc';
-import { globalData } from './globalData';
+import { globalData } from '../data/globalData';
 const { ccclass, property } = _decorator;
 
 @ccclass('spriteMove')

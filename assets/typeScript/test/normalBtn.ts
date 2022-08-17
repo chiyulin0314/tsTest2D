@@ -1,6 +1,6 @@
 import { _decorator, Component, Node, UIOpacity, resources, SpriteFrame, Sprite, director, Scene, UITransform, Layers, Enum, v2 } from 'cc';
-import { autoDestroy } from './autoDestroy';
-import { globalData } from './globalData';
+import { autoDestroy } from '../autoDestroy';
+import { globalData } from '../data/globalData';
 const { ccclass, property } = _decorator;
 
 @ccclass('normalBtn')

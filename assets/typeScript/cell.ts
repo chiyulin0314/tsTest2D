@@ -1,6 +1,5 @@
 import { _decorator, Component, Node, Sprite, UITransform, Color, resources, SpriteFrame, Layers } from 'cc';
-import { globalData } from './globalData';
-import { spriteTools } from './spriteTools';
+import { globalData } from './data/globalData';
 const { ccclass, property } = _decorator;
 
 @ccclass('cell')

@@ -22,9 +22,18 @@ export enum BLOCK_TYPE {
 
 @ccclass('blockData')
 export class blockData {
-    static blockData = null;
+    private blockData = null;
 
-    static initBlock(){
+    private static _instance: blockData = null;
+    static get instance(): blockData {
+        if(blockData._instance == null){
+            blockData._instance = new blockData();
+            blockData._instance.initBlock();
+        }
+        return blockData._instance;
+    };
+
+    private initBlock(){
         this.blockData = new Array(BLOCK_TYPE.TYPE_COUNT);
         for(var type = 0;type < BLOCK_TYPE.TYPE_COUNT;type++){
             this.blockData[type] = new Array(BLOCK_DIR.DIR_COUNT);
@@ -49,7 +58,7 @@ export class blockData {
         //this.showLog();
     }
 
-    static initBlockI(){
+    private initBlockI(){
         var index = BLOCK_TYPE.TYPE_I;
         this.blockData[index][BLOCK_DIR.DIR_0][1][0] = 1;
         this.blockData[index][BLOCK_DIR.DIR_0][1][1] = 1;
@@ -69,7 +78,7 @@ export class blockData {
         this.blockData[index][BLOCK_DIR.DIR_3][3][1] = 1;
     }
 
-    static initBlockJ(){
+    private initBlockJ(){
         var index = BLOCK_TYPE.TYPE_J;
         this.blockData[index][BLOCK_DIR.DIR_0][0][0] = 1;
         this.blockData[index][BLOCK_DIR.DIR_0][1][0] = 1;
@@ -89,7 +98,7 @@ export class blockData {
         this.blockData[index][BLOCK_DIR.DIR_3][2][1] = 1;
     }
 
-    static initBlockL(){
+    private initBlockL(){
         var index = BLOCK_TYPE.TYPE_L;
         this.blockData[index][BLOCK_DIR.DIR_0][0][2] = 1;
         this.blockData[index][BLOCK_DIR.DIR_0][1][0] = 1;
@@ -109,7 +118,7 @@ export class blockData {
         this.blockData[index][BLOCK_DIR.DIR_3][2][1] = 1;
     }
 
-    static initBlockO(){
+    private initBlockO(){
         var index = BLOCK_TYPE.TYPE_O;
         this.blockData[index][BLOCK_DIR.DIR_0][0][1] = 1;
         this.blockData[index][BLOCK_DIR.DIR_0][0][2] = 1;
@@ -129,7 +138,7 @@ export class blockData {
         this.blockData[index][BLOCK_DIR.DIR_3][1][2] = 1;
     }
 
-    static initBlockS(){
+    private initBlockS(){
         var index = BLOCK_TYPE.TYPE_S;
         this.blockData[index][BLOCK_DIR.DIR_0][0][1] = 1;
         this.blockData[index][BLOCK_DIR.DIR_0][0][2] = 1;
@@ -149,7 +158,7 @@ export class blockData {
         this.blockData[index][BLOCK_DIR.DIR_3][2][1] = 1;
     }
 
-    static initBlockT(){
+    private initBlockT(){
         var index = BLOCK_TYPE.TYPE_T;
         this.blockData[index][BLOCK_DIR.DIR_0][0][1] = 1;
         this.blockData[index][BLOCK_DIR.DIR_0][1][0] = 1;
@@ -169,7 +178,7 @@ export class blockData {
         this.blockData[index][BLOCK_DIR.DIR_3][2][1] = 1;
     }
 
-    static initBlockZ(){
+    private initBlockZ(){
         var index = BLOCK_TYPE.TYPE_Z;
         this.blockData[index][BLOCK_DIR.DIR_0][0][0] = 1;
         this.blockData[index][BLOCK_DIR.DIR_0][0][1] = 1;
@@ -190,8 +199,8 @@ export class blockData {
     }
 
     static getRandomType(curType, canSame = false){
-        if(this.blockData == null){
-            this.initBlock();
+        if(blockData.instance.blockData == null){
+            return false;
         }
 
         var type = math.randomRangeInt(0, BLOCK_TYPE.TYPE_COUNT);
@@ -204,8 +213,8 @@ export class blockData {
     }
 
     static getBlockData(type, dir = BLOCK_DIR.DIR_0){
-        if(this.blockData == null){
-            this.initBlock();
+        if(blockData.instance.blockData == null){
+            return false;
         }
 
         if(typeof type !== 'number' || type >= BLOCK_TYPE.TYPE_COUNT){
@@ -215,10 +224,10 @@ export class blockData {
             dir = BLOCK_DIR.DIR_0;
         }
 
-        return this.blockData[type][dir];
+        return blockData.instance.blockData[type][dir];
     }
 
-    static showLog(){
+    showLog(){
         for(var t = 0;t < this.blockData.length;t++){
             for(var d = 0;d < this.blockData[t].length;d++){
                 var str = '';

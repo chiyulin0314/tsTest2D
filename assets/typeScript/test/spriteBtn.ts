@@ -1,6 +1,6 @@
 import { _decorator, Component, Node, UIOpacity, Scene, Layers, v2, Sprite, resources, SpriteFrame, director } from 'cc';
-import { autoDestroy } from './autoDestroy';
-import { globalData } from './globalData';
+import { autoDestroy } from '../autoDestroy';
+import { globalData } from '../data/globalData';
 const { ccclass, property } = _decorator;
 
 @ccclass('spriteBtn')
