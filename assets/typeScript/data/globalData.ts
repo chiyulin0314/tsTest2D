@@ -18,5 +18,7 @@ export class globalData {
     static DROP_TIME = 1.0;
     static MOVE_TIME = 0.12;
     static IS_HINDER = true;
+
+    static LOAD_FROM_URL = false; //需有將Prefab放於網址上
 }
 
