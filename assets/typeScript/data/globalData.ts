@@ -9,6 +9,7 @@ export class globalData {
     static MAIN_SCENE = 'main';
     static PLAYER1_SCENE = 'p1Scene';
     static PLAYER2_SCENE = 'p2Scene';
+    static TEST_SCENE = 'testScene';
     static CELL_WH = 50;
 
     static USE_SPRITE = false;
