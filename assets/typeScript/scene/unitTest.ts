@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Button, Label, EventHandler, resources, AudioSource, AudioClip, assert } from 'cc';
+import { _decorator, Component, Node, Button, Label, EventHandler, resources, AudioSource, AudioClip, assert, Slider } from 'cc';
 import { globalData } from '../data/globalData';
 import { AudioManager } from '../tools/AudioManager';
 const { ccclass, property } = _decorator;
@@ -18,6 +18,7 @@ class unitTest extends Component {
         
     }
 
+//#region //========== audioUnitTest ==========
     audioUnitTest() {
         console.log(`========== [unitTest] audioUnitTest start ==========`);
         AudioManager.instance.init(this.node);
@@ -59,6 +60,10 @@ class unitTest extends Component {
         var muteButton = muteNode?.getComponent(Button);
         muteButton?.clickEvents.push(this.getEventHandler('onAudioClick', 'mute'));
 
+        var sliderNode = this.node.getChildByPath('audio/Slider');
+        var slider = sliderNode?.getComponent(Slider);
+        slider?.slideEvents.push(this.getEventHandler('onAudioClick', 'slider'));
+        
         console.log(`========== [unitTest] audioUnitTest finish ==========`);
     }
 
@@ -89,6 +94,13 @@ class unitTest extends Component {
                 var isMute = AudioManager.instance.isMute;
                 AudioManager.instance.setMute(!isMute);
                 break;
+            case 'slider':
+                var slider: Slider = e as Slider;
+                //console.log(`onAudioClick => slider: ${slider != null}, progress: ${slider.progress}`);
+                if(slider.progress != null){
+                    AudioManager.instance.setVolume(slider.progress);
+                }
+                break;
             default:
                 console.log(`onAudioClick => no handle with data: ${data}`);
                 break;
@@ -108,4 +120,5 @@ class unitTest extends Component {
 
         return eh;
     }
+//#endregion
 }
