@@ -1,4 +1,5 @@
 import { _decorator, Component, Node, UIOpacity, CCInteger, Enum, CCString, director } from 'cc';
+import { AudioManager } from './tools/AudioManager';
 const { ccclass, property } = _decorator;
 
 enum EVENT_TYPE {
@@ -23,6 +24,9 @@ export class commonButton extends Component {
         visible: function(this: commonButton) { return this.type == EVENT_TYPE.LOAD_SCENE; },
     })
     sceneName = "";
+    @property({type: CCString})
+    mouseEnterEffect = '';
+    private mouseEnterEffectKey = '';
     
     onLoad(){
         //console.log(`commonButton => onLoad`);
@@ -42,7 +46,9 @@ export class commonButton extends Component {
     }
 
     start() {
-
+        if(this.mouseEnterEffect != null && this.mouseEnterEffect.length > 0){
+            this.mouseEnterEffectKey = AudioManager.instance.loadFromResource(this.mouseEnterEffect);
+        }
     }
 
     update(deltaTime: number) {
@@ -53,6 +59,10 @@ export class commonButton extends Component {
         //console.log(`commonButton => onMouseEnter, this.uiOpacity: ${this.uiOpacity}`);
         if(this.uiOpacity != null){
             this.uiOpacity.opacity = this.hoverOpacity;
+        }
+
+        if(this.mouseEnterEffectKey != null && this.mouseEnterEffectKey.length > 0){
+            AudioManager.instance.playOnceFromKey(this.mouseEnterEffectKey);
         }
     }
 
@@ -73,6 +83,9 @@ export class commonButton extends Component {
             case EVENT_TYPE.NONE:
                 break;
             case EVENT_TYPE.LOAD_SCENE:
+                if(AudioManager.instance.isValid){
+                    AudioManager.instance.stop();
+                }
                 if(this.sceneName != null && this.sceneName.length > 0){
                     director.loadScene(this.sceneName);
                 }

@@ -24,8 +24,8 @@ export class iconBtn extends Component {
     onMouseDown(){
         //console.log(`iconBtn => onMouseDown`);
         
-        var url = 'http://192.168.0.98/cocos/testPrefab';
-        var loadRes = globalData.LOAD_FROM_URL ? url : 'testPrefab';
+        var url = globalData.COMMON_BUNDLE_URL;
+        var loadRes = globalData.LOAD_FROM_URL ? url : globalData.COMMON_BUNDLE_NAME;
         assetManager.loadBundle(loadRes, (err, bundle) => {
             if (globalData.LOAD_FROM_URL) console.warn(`loadPrefabFromOther => url: ${url}, scene: ${globalData.TEST_SCENE}`);
             if(err != null && err.message.length > 0){

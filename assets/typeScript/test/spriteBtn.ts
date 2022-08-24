@@ -1,6 +1,7 @@
 import { _decorator, Component, Node, UIOpacity, Scene, Layers, v2, Sprite, resources, SpriteFrame, director } from 'cc';
 import { autoDestroy } from '../autoDestroy';
 import { globalData } from '../data/globalData';
+import { AudioManager } from '../tools/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('spriteBtn')
@@ -8,6 +9,7 @@ export class spriteBtn extends Component {
 
     uiOpacity: UIOpacity = null;
     canvas: Scene = null;
+    private effectKey = '';
 
     onLoad(){
         console.log(`spriteBtn => onLoad`);
@@ -16,6 +18,10 @@ export class spriteBtn extends Component {
         this.node.on(Node.EventType.MOUSE_DOWN,this.onMouseDown,this);
         this.node.on(Node.EventType.MOUSE_ENTER,this.onMouseEnter,this);
         this.node.on(Node.EventType.MOUSE_LEAVE,this.onMouseLeave,this);
+
+        if(AudioManager.instance.isValid == false){
+            AudioManager.instance.init(this.canvas);
+        }
     }
 
     onDestroy(){
@@ -28,7 +34,7 @@ export class spriteBtn extends Component {
     }
 
     start() {
-
+        this.effectKey = AudioManager.instance.loadFromResource('star_a');
     }
 
     update(deltaTime: number) {
@@ -65,6 +71,9 @@ export class spriteBtn extends Component {
                 console.log(`onMouseDown => err: ${err}`);
                 nSprite.spriteFrame = spriteFrame;
                 nSprite.node.addComponent(autoDestroy).second = 3;
+
+                //play effect
+                AudioManager.instance.playOnceFromKey(this.effectKey);
             });
         }
     }

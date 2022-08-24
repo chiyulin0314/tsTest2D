@@ -2,6 +2,7 @@ import { _decorator, Component, Node, UITransform, KeyCode, game, Sprite, Sprite
 import { eventData } from '../data/eventData';
 import { globalData } from '../data/globalData';
 import { tetris } from '../tetris';
+import { AudioManager } from '../tools/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('tetrisP2')
@@ -43,6 +44,8 @@ export class tetrisP2 extends Component {
         }
         game.on(eventData.GAME_OVER_EVENT, this.onGameOverEvent, this);
         game.on(eventData.CLEAN_BLOCK_EVENT, this.onCleanBlockEvent, this);
+
+        AudioManager.instance.init(this.node);
     }
 
     onDestroy () {
@@ -55,7 +58,11 @@ export class tetrisP2 extends Component {
     }
 
     start() {
-
+        AudioManager.instance.playFromResource('Get Over');
+        var key1 = AudioManager.instance.loadFromResource('star_a');
+        this.tetrisComp1.cleanEffectKey = key1;
+        var key2 = AudioManager.instance.loadFromResource('star_b');
+        this.tetrisComp2.cleanEffectKey = key2;
     }
 
     update(deltaTime: number) {

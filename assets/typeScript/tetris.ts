@@ -5,6 +5,7 @@ import { eventData } from './data/eventData';
 import { globalData } from './data/globalData';
 import { key } from './key';
 import { drawTools } from './tools/drawTools';
+import { AudioManager } from './tools/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('tetris')
@@ -53,6 +54,9 @@ export class tetris extends Component {
 
     private trans: UITransform = null;
     private graphics: Graphics = null;
+
+    //音效設定
+    cleanEffectKey: string = '';
 
     onLoad () {
         this.trans = this.getComponent(UITransform);
@@ -572,6 +576,7 @@ export class tetris extends Component {
         if(this.nowBlock == null) return false;
         if(this.cellArray == null) return false;
 
+        var isClean = false;
         for(var i = 0;i < 4;i++){
             var col = this.blockPos.x + i;
             if(col < 0 || col >= this.column) break;
@@ -588,6 +593,8 @@ export class tetris extends Component {
 
             //這列已滿，消除作業
             if(num == this.row){
+                isClean = true;
+
                 //取得這列的資料(避開當前顏色)
                 var rowData = new Array(this.row);
                 for(var y = 0;y < this.row;y++){
@@ -616,6 +623,10 @@ export class tetris extends Component {
                 console.log(`[tetris]cleanBlock emit => rowData: ${rowData}`);
                 game.emit(eventData.CLEAN_BLOCK_EVENT, this.tetrisName, rowData);
             }
+        }
+
+        if(isClean){
+            AudioManager.instance.playOnceFromKey(this.cleanEffectKey);
         }
     }
 

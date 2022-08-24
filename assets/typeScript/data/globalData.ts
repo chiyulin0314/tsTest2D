@@ -19,6 +19,8 @@ export class globalData {
     static MOVE_TIME = 0.12;
     static IS_HINDER = true;
 
-    static LOAD_FROM_URL = false; //需有將Prefab放於網址上
+    static LOAD_FROM_URL = true; //需有將Prefab放於網址上
+    static COMMON_BUNDLE_URL = 'http://192.168.0.98/cocos/testPrefab';
+    static COMMON_BUNDLE_NAME = 'testPrefab';
 }
 
