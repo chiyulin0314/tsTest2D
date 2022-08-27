@@ -183,6 +183,9 @@ class unitTest extends Component {
         ske.setStartListener(this.onGirlAnimStart);
         ske.setEndListener(this.onGirlAnimEnd);
 
+        //var actArr = SpineUtils.getSpineActions(ske);
+        //actArr.forEach(element => { console.log(element); });
+
         //var url = `http://192.168.0.98/cocos/boy/spineboy-pro`;
         //SpineUtils.loadFromRemote(url, this.node);
 

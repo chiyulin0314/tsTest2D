@@ -33,6 +33,9 @@ export class SpineUtils {
         let imageUrl = `${path}.png`;
         let skeUrl = `${path}.json`;
         let atlasUrl = `${path}.atlas`;
+        var index = imageUrl.lastIndexOf('/');
+        var pngName = imageUrl.substring(index < imageUrl.length ? index + 1 : 0);
+        //console.log(`imageUrl: ${imageUrl}, index: ${index}, pngName: ${pngName}`);
         assetManager.loadAny([{ url: atlasUrl, ext: '.txt' }, { url: skeUrl, ext: '.txt' }], (err, assets) => {
             if(err != null && err.message.length > 0){
                 console.error(`[SpineUtils] loadFromRemote - atlas or skeleton load error => message: ${err.message}`);
@@ -47,12 +50,12 @@ export class SpineUtils {
                 asset.skeletonJson = assets[1];
                 asset.atlasText = assets[0];
                 asset.textures = [texture];
-                asset.textureNames = ['1.png'];
+                asset.textureNames = [pngName];
 
                 var node = new Node();
                 node.layer = SpineUtils.DEFAULT_LAYER;
                 var ske = node.addComponent(sp.Skeleton);
-                ske.skeletonData = asset;
+                ske.skeletonData = asset; //[Error]
 
                 if(parent != null){
                     parent.addChild(node);
@@ -122,8 +125,18 @@ export class SpineUtils {
         return true;
     }
 
-    static getSpineActions(skeleton: sp.Skeleton){
-        //貌似無法...
+    static getSpineActions(skeleton: sp.Skeleton): string[]{
+        var resArr: string[] = [];
+        var dict = skeleton.skeletonData.getAnimsEnum();
+        for (let key in dict) {
+            if(key == null || key.length <= 0 || key == '<None>'){
+                continue;
+            }
+
+            resArr.push(key);
+        }
+
+        return resArr;
     }
 }
 
