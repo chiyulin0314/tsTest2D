@@ -2846,7 +2846,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 47.81,
+      "width": 120.06,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -2876,7 +2876,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "spine",
+    "_string": "spineUnitTest",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 20,
