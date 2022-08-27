@@ -1,6 +1,7 @@
-import { _decorator, Component, Node, Button, Label, EventHandler, resources, AudioSource, AudioClip, assert, Slider } from 'cc';
+import { _decorator, Component, Node, Button, Label, EventHandler, resources, AudioSource, AudioClip, assert, Slider, Skeleton, sp, Texture2D } from 'cc';
 import { globalData } from '../data/globalData';
 import { AudioManager } from '../tools/AudioManager';
+import { SpineUtils } from '../tools/SpineUtils';
 const { ccclass, property } = _decorator;
 
 @ccclass('unitTest')
@@ -10,8 +11,13 @@ class unitTest extends Component {
     private audioMusicKey2 = '';
     private audioEffectKey1 = '';
 
+    private girlSkinId: number = 0;
+    private girlActId: number = 0;
+    private riderSke: sp.Skeleton = null;
+
     start() {
         this.audioUnitTest();
+        this.spineUnitTest();
     }
 
     update(deltaTime: number) {
@@ -106,6 +112,202 @@ class unitTest extends Component {
                 break;
         }
     }
+//#endregion
+
+//#region //========== spineUnitTest ==========
+    spineUnitTest(){
+        console.log(`========== [unitTest] spineUnitTest start ==========`);
+
+        var activeGirlNode = this.node.getChildByPath('spine/activeGirl');
+        var activeGirlButton = activeGirlNode?.getComponent(Button);
+        activeGirlButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'activeGirl'));
+
+        var loadBoyNode = this.node.getChildByPath('spine/loadBoy');
+        var loadBoyButton = loadBoyNode?.getComponent(Button);
+        loadBoyButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'loadBoy'));
+
+        var loadRiderNode = this.node.getChildByPath('spine/loadRider');
+        var loadRiderButton = loadRiderNode?.getComponent(Button);
+        loadRiderButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'loadRider'));
+
+        var loadRiderBundleNode = this.node.getChildByPath('spine/loadRider-bundle');
+        var loadRiderBundleButton = loadRiderBundleNode?.getComponent(Button);
+        loadRiderBundleButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'loadRider-bundle'));
+
+        var changeNode = this.node.getChildByPath('spine/instance/girl/change');
+        var changeButton = changeNode?.getComponent(Button);
+        changeButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'girl-change'));
+        var actionNode = this.node.getChildByPath('spine/instance/girl/action');
+        var actionButton = actionNode?.getComponent(Button);
+        actionButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'girl-action'));
+
+        var bChangeNode = this.node.getChildByPath('spine/instance/boy/changeWeapon');
+        var bChangeButton = bChangeNode?.getComponent(Button);
+        bChangeButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'boy-changeWeapon'));
+        var bDestroyNode = this.node.getChildByPath('spine/instance/boy/destoryHero');
+        var bDestroyButton = bDestroyNode?.getComponent(Button);
+        bDestroyButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'boy-destoryHero'));
+
+        var rJumpNode = this.node.getChildByPath('spine/instance/rider/jump');
+        var rJumpButton = rJumpNode?.getComponent(Button);
+        rJumpButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'rider-jump'));
+        var rWalkNode = this.node.getChildByPath('spine/instance/rider/walk');
+        var rWalkButton = rWalkNode?.getComponent(Button);
+        rWalkButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'rider-walk'));
+        var rRoarNode = this.node.getChildByPath('spine/instance/rider/roar');
+        var rRoarButton = rRoarNode?.getComponent(Button);
+        rRoarButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'rider-roar'));
+        var rWGNode = this.node.getChildByPath('spine/instance/rider/walk+grab');
+        var rWGButton = rWGNode?.getComponent(Button);
+        rWGButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'rider-walk+grab'));
+        var rWHNode = this.node.getChildByPath('spine/instance/rider/walk+holster');
+        var rWHButton = rWHNode?.getComponent(Button);
+        rWHButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'rider-walk+holster'));
+
+        var node = this.node.getChildByPath('spine/instance/girl');
+        var ske = node.getComponentInChildren(sp.Skeleton);
+        ske.setCompleteListener(this.onGirlAnimComplete);
+        ske.setStartListener(this.onGirlAnimStart);
+        ske.setEndListener(this.onGirlAnimEnd);
+
+        // var url = `http://192.168.0.98/cocos/boy/spineboy-pro`;
+        // SpineUtils.loadFromRemote(url);
+
+        console.log(`========== [unitTest] spineUnitTest finish ==========`);
+    }
+
+    onSpineClick(e, data){
+        console.log(`onSpineClick => e: ${e.target}, data: ${data}`);
+        switch(data){
+            case 'activeGirl':
+                var node = this.node.getChildByPath('spine/instance/girl');
+                if(node != null){
+                    node.active = !node.active;
+                }
+                break;
+            case 'loadBoy':
+                var node = this.node.getChildByPath('spine/instance/boy');
+                if(node != null){
+                    node.active = true;
+                }
+
+                node.getChildByName('boy-skeleton')?.destroy();
+                SpineUtils.loadFromResource('spine/spineboy-pro', node, (ske: sp.Skeleton) => {
+                    ske?.setAnimation(0, 'walk', true);
+                    ske?.node?.setScale(0.5, 0.5);
+                    ske.node.name = 'boy-skeleton';
+                });
+                break;
+            case 'loadRider':
+                var node = this.node.getChildByPath('spine/instance/rider');
+                if(node != null){
+                    node.active = true;
+                }
+
+                node.getChildByName('skeleton')?.destroy();
+                SpineUtils.loadFromPrefab('prefab/rider', node, (ske: sp.Skeleton) => {
+                    if(ske != null){
+                        this.riderSke = ske;
+                        ske.setAnimation(0, 'roar', true);
+                        ske.node.name = 'skeleton';
+                    }
+                });
+                break;
+            case 'loadRider-bundle':
+                var node = this.node.getChildByPath('spine/instance/rider');
+                if(node != null){
+                    node.active = true;
+                }
+
+                node.getChildByName('skeleton')?.destroy();
+                var nameOrUrl = globalData.LOAD_FROM_URL ? globalData.COMMON_BUNDLE_URL : globalData.COMMON_BUNDLE_NAME;
+                SpineUtils.loadFromBundle(nameOrUrl, 'rider2', node, (ske: sp.Skeleton) => {
+                    if(ske != null){
+                        this.riderSke = ske;
+                        ske.setAnimation(0, 'roar', true);
+                        ske.node.name = 'skeleton';
+
+                        this.riderSke.setMix('walk', 'jump', 0.5);
+                        this.riderSke.setMix('jump', 'walk', 0.5);
+                        this.riderSke.setMix('walk', 'roar', 0.5);
+                        this.riderSke.setMix('roar', 'walk', 0.5);
+                        this.riderSke.setMix('jump', 'roar', 0.5);
+                        this.riderSke.setMix('roar', 'jump', 0.5);
+                        this.riderSke.setMix('jump', 'jump', 0.5);
+                        this.riderSke.setMix('walk', 'walk', 0.5);
+                    }
+                });
+                break;
+            case 'girl-change':
+                const skins = ['girl', 'girl-blue-cape', 'girl-spring-dress'].map(x => `full-skins/${x}`);
+                this.girlSkinId = (this.girlSkinId + 1) % skins.length;
+                var ske = this.node.getChildByPath('spine/instance/girl/skeleton')?.getComponent(sp.Skeleton);
+                ske?.setSkin(skins[this.girlSkinId]);
+                break;
+            case 'girl-action':
+                const actions = ['dance', 'dress-up', 'idle', 'walk', 'aware', 'blink'];
+                this.girlActId = (this.girlActId + 1) % actions.length;
+                var ske = this.node.getChildByPath('spine/instance/girl/skeleton')?.getComponent(sp.Skeleton);
+                ske?.setAnimation(0, actions[this.girlActId], true);
+                break;
+            case 'boy-changeWeapon':
+                var node = this.node.getChildByPath('spine/instance/boy');
+                SpineUtils.loadFromResource('spine/hero-pro', node, (heroSke: sp.Skeleton) => {
+                    if(heroSke != null){
+                        heroSke.setAnimation(0, 'idle', true);
+                        heroSke.node.setScale(0.5, 0.5);
+                        heroSke.node.setPosition(-200, 0);
+                        heroSke.node.name = 'hero-skeleton';
+
+                        var boySke = node.getChildByName('boy-skeleton')?.getComponent(sp.Skeleton);
+                        let slot1 = boySke.findSlot("gun");
+                        let slot2 = heroSke.findSlot("weapon");
+                        let attachment = slot2.getAttachment();
+                        slot1.setAttachment(attachment);
+                    }
+                });
+                break;
+            case 'boy-destoryHero':
+                var node = this.node.getChildByPath('spine/instance/boy');
+                node.getChildByName('hero-skeleton')?.destroy();
+                break;
+            case 'rider-jump':
+                this.riderSke?.setAnimation(0, 'jump', true);
+                break;
+            case 'rider-walk':
+                this.riderSke?.setAnimation(0, 'walk', true);
+                break;
+            case 'rider-roar':
+                this.riderSke?.setAnimation(0, 'roar', true);
+                break;
+            case 'rider-walk+grab':
+                this.riderSke?.setAnimation(0, 'walk', true);
+                this.riderSke?.setAnimation(1, 'gun-grab', false);
+                break;
+            case 'rider-walk+holster':
+                this.riderSke?.setAnimation(0, 'walk', true);
+                this.riderSke?.setAnimation(1, 'gun-holster', false);
+                break;
+            default:
+                console.log(`onSpineClick => no handle with data: ${data}`);
+                break;
+        }
+    }
+
+    onGirlAnimComplete(trackEntry){
+        let name = trackEntry.animation.name;
+        console.log(`onGirlAnimComplete => Complete name: ${name}`);
+    }
+    onGirlAnimStart(trackEntry){
+        let name = trackEntry.animation.name;
+        console.log(`onGirlAnimStart => Start name: ${name}`);
+    }
+    onGirlAnimEnd(trackEntry){
+        let name = trackEntry.animation.name;
+        console.log(`onGirlAnimEnd => End name: ${name}`);
+    }
+
+//#endregion
 
     getEventHandler(funName: string, customData: string = null){
         if(funName == null || funName.length <= 0) return null;
@@ -120,5 +322,5 @@ class unitTest extends Component {
 
         return eh;
     }
-//#endregion
+
 }
