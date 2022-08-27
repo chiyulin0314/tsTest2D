@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, sp, resources, assetManager, SpriteAtlas, Skeleton, Texture2D, Layers, Prefab, instantiate } from 'cc';
+import { _decorator, Component, Node, sp, resources, assetManager, SpriteAtlas, Skeleton, Texture2D, Layers, Prefab, instantiate, ImageAsset } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('SpineUtils')
@@ -30,16 +30,20 @@ export class SpineUtils {
 
     static loadFromRemote(path: string, parent: Node = null, callback: Function = null){
         if(path == null || path.length <= 0) return false;
-        //http://192.168.0.98/cocos/boy/spineboy-pro
-        let imageUrl = `${path}`;
+        let imageUrl = `${path}.png`;
         let skeUrl = `${path}.json`;
         let atlasUrl = `${path}.atlas`;
-        console.log(`loadFromRemote => 1, atlasUrl: ${atlasUrl}, skeUrl: ${skeUrl}`);
         assetManager.loadAny([{ url: atlasUrl, ext: '.txt' }, { url: skeUrl, ext: '.txt' }], (err, assets) => {
-            console.log(`loadFromRemote => 2, imageUrl: ${imageUrl}`);
-            assetManager.loadRemote(imageUrl, { ext: '.png' }, (error, texture: Texture2D) => {
-                console.log(`loadFromRemote => 3`);
-                let asset = new sp.SkeletonData();
+            if(err != null && err.message.length > 0){
+                console.error(`[SpineUtils] loadFromRemote - atlas or skeleton load error => message: ${err.message}`);
+            }
+            assetManager.loadRemote(imageUrl, (error, texture: Texture2D) => {
+                console.log(`loadFromRemote => width: ${texture.width}, height: ${texture.height}`);
+                if(error != null && error.message.length > 0){
+                    console.error(`[SpineUtils] loadFromRemote - image load error => message: ${error.message}`);
+                }
+
+                var asset = new sp.SkeletonData();
                 asset.skeletonJson = assets[1];
                 asset.atlasText = assets[0];
                 asset.textures = [texture];
@@ -59,7 +63,6 @@ export class SpineUtils {
                 }
             });
         });
-        console.log(`loadFromRemote => 4`);
         return true;
     }
 

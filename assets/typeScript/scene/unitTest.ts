@@ -134,12 +134,25 @@ class unitTest extends Component {
         var loadRiderBundleButton = loadRiderBundleNode?.getComponent(Button);
         loadRiderBundleButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'loadRider-bundle'));
 
+        var loadAsuraNode = this.node.getChildByPath('spine/loadAsura');
+        var loadAsuraButton = loadAsuraNode?.getComponent(Button);
+        loadAsuraButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'loadAsura'));
+
         var changeNode = this.node.getChildByPath('spine/instance/girl/change');
         var changeButton = changeNode?.getComponent(Button);
         changeButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'girl-change'));
         var actionNode = this.node.getChildByPath('spine/instance/girl/action');
         var actionButton = actionNode?.getComponent(Button);
         actionButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'girl-action'));
+        var gWalkNode = this.node.getChildByPath('spine/instance/girl/addWalk');
+        var gWalkButton = gWalkNode?.getComponent(Button);
+        gWalkButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'girl-addWalk'));
+        var gDanceNode = this.node.getChildByPath('spine/instance/girl/addDance');
+        var gDanceButton = gDanceNode?.getComponent(Button);
+        gDanceButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'girl-addDance'));
+        var gIdleNode = this.node.getChildByPath('spine/instance/girl/addIdle');
+        var gIdleButton = gIdleNode?.getComponent(Button);
+        gIdleButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'girl-addIdle'));
 
         var bChangeNode = this.node.getChildByPath('spine/instance/boy/changeWeapon');
         var bChangeButton = bChangeNode?.getComponent(Button);
@@ -170,8 +183,8 @@ class unitTest extends Component {
         ske.setStartListener(this.onGirlAnimStart);
         ske.setEndListener(this.onGirlAnimEnd);
 
-        // var url = `http://192.168.0.98/cocos/boy/spineboy-pro`;
-        // SpineUtils.loadFromRemote(url);
+        //var url = `http://192.168.0.98/cocos/boy/spineboy-pro`;
+        //SpineUtils.loadFromRemote(url, this.node);
 
         console.log(`========== [unitTest] spineUnitTest finish ==========`);
     }
@@ -238,6 +251,19 @@ class unitTest extends Component {
                     }
                 });
                 break;
+            case 'loadAsura':
+                var node = this.node.getChildByPath('spine/instance/asura');
+                if(node != null){
+                    node.active = true;
+                }
+
+                node.getChildByName('asura-skeleton')?.destroy();
+                SpineUtils.loadFromResource('spine/Asura/Asura', node, (ske: sp.Skeleton) => {
+                    ske?.setAnimation(0, 'animation', true);
+                    ske?.node?.setScale(0.15, 0.15);
+                    ske.node.name = 'asura-skeleton';
+                });
+                break;
             case 'girl-change':
                 const skins = ['girl', 'girl-blue-cape', 'girl-spring-dress'].map(x => `full-skins/${x}`);
                 this.girlSkinId = (this.girlSkinId + 1) % skins.length;
@@ -249,6 +275,18 @@ class unitTest extends Component {
                 this.girlActId = (this.girlActId + 1) % actions.length;
                 var ske = this.node.getChildByPath('spine/instance/girl/skeleton')?.getComponent(sp.Skeleton);
                 ske?.setAnimation(0, actions[this.girlActId], true);
+                break;
+            case 'girl-addWalk':
+                var ske = this.node.getChildByPath('spine/instance/girl/skeleton')?.getComponent(sp.Skeleton);
+                ske?.addAnimation(0, 'walk', true);
+                break;
+            case 'girl-addDance':
+                var ske = this.node.getChildByPath('spine/instance/girl/skeleton')?.getComponent(sp.Skeleton);
+                ske?.addAnimation(0, 'dance', true);
+                break;
+            case 'girl-addIdle':
+                var ske = this.node.getChildByPath('spine/instance/girl/skeleton')?.getComponent(sp.Skeleton);
+                ske?.addAnimation(0, 'idle', true);
                 break;
             case 'boy-changeWeapon':
                 var node = this.node.getChildByPath('spine/instance/boy');
@@ -306,7 +344,6 @@ class unitTest extends Component {
         let name = trackEntry.animation.name;
         console.log(`onGirlAnimEnd => End name: ${name}`);
     }
-
 //#endregion
 
     getEventHandler(funName: string, customData: string = null){
