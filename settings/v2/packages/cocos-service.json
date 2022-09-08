@@ -1,14 +1,22 @@
 {
   "__version__": "3.0.3",
   "game": {
-    "name": "UNKNOW GAME",
-    "app_id": "UNKNOW",
+    "app_id": "626407973",
+    "name": "tsTest2D_20220908123957",
     "c_id": "0"
   },
   "appConfigMaps": [
     {
       "app_id": "UNKNOW",
       "config_id": "ba69b5"
+    },
+    {
+      "app_id": "626407966",
+      "config_id": "5c83db"
+    },
+    {
+      "app_id": "626407973",
+      "config_id": "8e94f1"
     }
   ],
   "configs": [
@@ -18,6 +26,32 @@
       "config_name": "Default",
       "config_remarks": "",
       "services": []
+    },
+    {
+      "app_id": "626407966",
+      "config_id": "5c83db",
+      "config_name": "Default",
+      "config_remarks": "",
+      "services": [
+        {
+          "service_id": "235",
+          "enable": true,
+          "param": {}
+        }
+      ]
+    },
+    {
+      "app_id": "626407973",
+      "config_id": "8e94f1",
+      "config_name": "Default",
+      "config_remarks": "",
+      "services": [
+        {
+          "service_id": "235",
+          "enable": false,
+          "param": {}
+        }
+      ]
     }
   ]
 }

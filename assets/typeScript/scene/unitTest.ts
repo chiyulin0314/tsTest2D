@@ -34,7 +34,7 @@ class unitTest extends Component {
         var nameOrUrl = globalData.LOAD_FROM_URL ? globalData.COMMON_BUNDLE_URL : globalData.COMMON_BUNDLE_NAME;
         var name = 'Share the World';
         this.audioMusicKey2 = AudioManager.instance.loadFromBundle(nameOrUrl, name);
-        this.audioEffectKey1 = AudioManager.instance.loadFromResource('star_a');
+        this.audioEffectKey1 = AudioManager.instance.loadFromResource('effectStarA');
         
         var pmNode = this.node.getChildByPath('audio/playMusic');
         var pmButton = pmNode?.getComponent(Button);
@@ -84,7 +84,7 @@ class unitTest extends Component {
                 AudioManager.instance.playFromKey(this.audioMusicKey2);
                 break;
             case 'playEffect':
-                //AudioManager.instance.playOnceFromResource('star_a');
+                //AudioManager.instance.playOnceFromResource('effectStarA');
                 AudioManager.instance.playOnceFromKey(this.audioEffectKey1);
                 break;
             case 'play':
@@ -133,10 +133,6 @@ class unitTest extends Component {
         var loadRiderBundleNode = this.node.getChildByPath('spine/loadRider-bundle');
         var loadRiderBundleButton = loadRiderBundleNode?.getComponent(Button);
         loadRiderBundleButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'loadRider-bundle'));
-
-        var loadAsuraNode = this.node.getChildByPath('spine/loadAsura');
-        var loadAsuraButton = loadAsuraNode?.getComponent(Button);
-        loadAsuraButton?.clickEvents.push(this.getEventHandler('onSpineClick', 'loadAsura'));
 
         var changeNode = this.node.getChildByPath('spine/instance/girl/change');
         var changeButton = changeNode?.getComponent(Button);
@@ -252,19 +248,6 @@ class unitTest extends Component {
                         this.riderSke.setMix('jump', 'jump', 0.5);
                         this.riderSke.setMix('walk', 'walk', 0.5);
                     }
-                });
-                break;
-            case 'loadAsura':
-                var node = this.node.getChildByPath('spine/instance/asura');
-                if(node != null){
-                    node.active = true;
-                }
-
-                node.getChildByName('asura-skeleton')?.destroy();
-                SpineUtils.loadFromResource('spine/Asura/Asura', node, (ske: sp.Skeleton) => {
-                    ske?.setAnimation(0, 'animation', true);
-                    ske?.node?.setScale(0.15, 0.15);
-                    ske.node.name = 'asura-skeleton';
                 });
                 break;
             case 'girl-change':

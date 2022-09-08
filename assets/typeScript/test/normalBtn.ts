@@ -36,7 +36,7 @@ export class normalBtn extends Component {
     }
 
     start() {
-        this.effectKey = AudioManager.instance.loadFromResource('star_b');
+        this.effectKey = AudioManager.instance.loadFromResource('effectStarB');
     }
 
     update(deltaTime: number) {

@@ -34,7 +34,7 @@ export class spriteBtn extends Component {
     }
 
     start() {
-        this.effectKey = AudioManager.instance.loadFromResource('star_a');
+        this.effectKey = AudioManager.instance.loadFromResource('effectStarA');
     }
 
     update(deltaTime: number) {

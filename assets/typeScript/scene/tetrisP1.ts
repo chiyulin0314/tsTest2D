@@ -39,7 +39,7 @@ export class tetrisP1 extends Component {
 
     start() {
         AudioManager.instance.playFromResource('Get Over');
-        var key = AudioManager.instance.loadFromResource('star_a');
+        var key = AudioManager.instance.loadFromResource('effectStarA');
         this.tetrisComp.cleanEffectKey = key;
     }
 
