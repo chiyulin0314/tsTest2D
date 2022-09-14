@@ -1,7 +1,7 @@
 import { _decorator, Component, Node, Button, Label, EventHandler, resources, AudioSource, AudioClip, assert, Slider, Skeleton, sp, Texture2D } from 'cc';
 import { globalData } from '../data/globalData';
-import { AudioManager } from '../tools/AudioManager';
-import { SpineUtils } from '../tools/SpineUtils';
+import { AudioManager } from '../../references/testUtils/AudioManager';
+import { SpineUtils } from '../../references/testUtils/SpineUtils';
 const { ccclass, property } = _decorator;
 
 @ccclass('unitTest')

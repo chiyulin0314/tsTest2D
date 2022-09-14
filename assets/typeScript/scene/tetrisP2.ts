@@ -1,8 +1,8 @@
 import { _decorator, Component, Node, UITransform, KeyCode, game, Sprite, SpriteFrame, resources, Layers } from 'cc';
+import { AudioManager } from '../../references/testUtils/AudioManager';
 import { eventData } from '../data/eventData';
 import { globalData } from '../data/globalData';
 import { tetris } from '../tetris';
-import { AudioManager } from '../tools/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('tetrisP2')

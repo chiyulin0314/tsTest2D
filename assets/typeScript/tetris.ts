@@ -4,8 +4,8 @@ import { cell } from './cell';
 import { eventData } from './data/eventData';
 import { globalData } from './data/globalData';
 import { key } from './key';
-import { drawTools } from './tools/drawTools';
-import { AudioManager } from './tools/AudioManager';
+import { drawTools } from '../references/testUtils/drawTools';
+import { AudioManager } from '../references/testUtils/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('tetris')

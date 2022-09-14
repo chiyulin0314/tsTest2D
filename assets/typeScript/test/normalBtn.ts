@@ -1,7 +1,7 @@
 import { _decorator, Component, Node, UIOpacity, resources, SpriteFrame, Sprite, director, Scene, UITransform, Layers, Enum, v2 } from 'cc';
+import { AudioManager } from '../../references/testUtils/AudioManager';
 import { autoDestroy } from '../autoDestroy';
 import { globalData } from '../data/globalData';
-import { AudioManager } from '../tools/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('normalBtn')

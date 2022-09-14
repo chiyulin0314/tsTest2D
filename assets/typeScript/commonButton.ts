@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, UIOpacity, CCInteger, Enum, CCString, director } from 'cc';
-import { AudioManager } from './tools/AudioManager';
+import { AudioManager } from '../references/testUtils/AudioManager';
 const { ccclass, property } = _decorator;
 
 enum EVENT_TYPE {
